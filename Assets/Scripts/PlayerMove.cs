@@ -7,28 +7,24 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField] GameObject DestroyEffect;
     [SerializeField] GameObject ChangeDirectionEffect2;
-
     [SerializeField] GameObject FireWallBounceEffect;
     [SerializeField] GameObject FireEffect;
-    
-    private Camera mainCamera;
-
     [SerializeField] private float rotationSpeed = 15f;
+    private Camera mainCamera;
     private Vector3 Direction;
     private GameObject fire;
-    // Start is called before the first frame update
+    private float verticalSpeed = 4f;
     void Start()
     {
-        Direction = new Vector3(0.3f,0f,0f);
+        Direction = new Vector3(verticalSpeed,0f,0f);
         mainCamera = Camera.main;
-
         fire = Instantiate(FireEffect,transform.position,Quaternion.identity);
     }
     
     void Update()
     {
-        transform.position += Direction;
-        transform.Rotate( 750f * Time.deltaTime, 0f,0f);
+        transform.position += Direction * Time.deltaTime;
+        transform.Rotate( -750f * Time.deltaTime, 0f,0f);
         KeepPlayerOnScreen();
         fire.transform.position = transform.position ;
     }
@@ -59,23 +55,23 @@ public class PlayerMove : MonoBehaviour
         Vector3 EffectLocation = transform.position;
         EffectLocation.x += 0.35f;
         EffectLocation.y -= 0.35f;
-        if(Direction.x != -0.03f){
+        if(Direction.x != -verticalSpeed){
             EffectLocation.x -= 0.35f;
             EffectLocation.y -= 0.35f;
             Destroy(Instantiate(ChangeDirectionEffect2,EffectLocation,Quaternion.identity),0.5f);
         }
-        Direction.x = -0.03f;
+        Direction.x = -verticalSpeed;
         rotate();
     }
 
     public void MoveRight(){
         Vector3 EffectLocation = transform.position;
-        if(Direction.x != 0.03f){
+        if(Direction.x != verticalSpeed){
             EffectLocation.x -= 0.35f;
             EffectLocation.y -= 0.35f;
             Destroy(Instantiate(ChangeDirectionEffect2,EffectLocation,Quaternion.identity),0.5f);
         }
-        Direction.x = 0.03f;
+        Direction.x = verticalSpeed;
         rotate();
     }
 
